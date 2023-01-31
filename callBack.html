@@ -15,8 +15,8 @@
 </body>
 <script>
     let postman=[
-        {name :'rajan ', address : 'bihar'},
-        {name : 'sohan',  address:'delhi'}
+        {name :'rajan ', address : 'bihar',time: new Date().getTime()},
+        {name : 'sohan',  address:'delhi',time: new Date().getTime()}
        
     ]
    
@@ -26,19 +26,20 @@
             callback()//displayPostman() and remove callback
         },3000)
     }
-  
+  let intervalID;
  function   displayPostman(){
+    clearInterval(intervalID);
     let add=  document.getElementById('addman')
-        setTimeout(()=>{
-          let tim=new Date() 
-          let y=tim.getTime()    
+        setInterval(()=>{
+      
+          let y=new Date().getTime()    
           let s=''  
             postman.forEach((e)=>{
                 s+=`<li>${e.name} : => ${e.address}  :createdAt -->${(parseInt(y-e.time))/1000}s ago  <button id="edit">Edit</button></li>`
             })
             document.getElementById('addman').innerHTML=s
             // prompt('want to add')
-        },3000)
+        },5000);
         
      }
     let newPost={name:'rajandera',address:'maharastra'}
