@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>call back</title>
+</head>
+<body>
+    <header>Call back</header>
+    <div>
+        <ul id="addman"></ul>
+    </div>
+    
+</body>
+<script>
+    let postman=[
+        {name :'rajan ', address : 'bihar'},
+        {name : 'sohan',  address:'delhi'}
+       
+    ]
+   
+ function   addPostman(post,callback){
+        setTimeout(()=>{
+            postman.push(post)
+            callback()//displayPostman() and remove callback
+        },3000)
+    }
+  
+ function   displayPostman(){
+    let add=  document.getElementById('addman')
+        setTimeout(()=>{
+          let tim=new Date() 
+          let y=tim.getTime()    
+          let s=''  
+            postman.forEach((e)=>{
+                s+=`<li>${e.name} : => ${e.address}  :createdAt -->${(parseInt(y-e.time))/1000}s ago  <button id="edit">Edit</button></li>`
+            })
+            document.getElementById('addman').innerHTML=s
+            prompt('want to add')
+        },3000)
+        
+     }
+    let newPost={name:'rajandera',address:'maharastra',time: new Date().getTime()}
+    addPostman(newPost,displayPostman)
+    setTimeout(()=>{
+        let newPost2={name:'rajbabu',address:'delhifs',time: new Date().getTime()}
+        addPostman(newPost2,displayPostman)
+    },4000)
+    setTimeout(()=>{
+        let newPost2= {name:'surendere',address:'goa',time: new Date().getTime()}
+        addPostman(newPost2,displayPostman)
+    },6000)
+    setTimeout(()=>{
+        let newPost1= {name:'abhisheak',address:'darbhanga',time: new Date().getTime()}
+        addPostman(newPost1,displayPostman)
+    },9000)
+  
+    
+</script>
+</html>
