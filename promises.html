@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>promises</title>
+    <style>
+        #timerlast{
+            position: fixed;
+            left: 90%;
+            top: 5%;
+            background-color: red;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <header>promises</header>
+    <div>
+        <div id="timerlast">
+       
+        </div>
+        <ul id="addman"></ul>
+    </div>
+    
+    
+</body>
+<script>
+    let postman=[
+        {name :'rajan ', address : 'bihar',time: new Date().getTime()},
+        {name : 'sohan',  address:'delhi',time: new Date().getTime()}
+       
+    ]
+   
+ function   addPostman(post){
+    return new Promise((resolve,rejact)=>{
+        
+        setTimeout(()=>{
+            postman.push({...post,time: new Date().getTime()})
+            // callback()//displayPostman() and remove callback
+        },3000)
+        const error=true
+        if(error){
+           
+            resolve()
+        }
+        else(
+            rejact('Error:enter valid details ')
+        )
+
+    });
+}
+function deletePost(){
+    return new Promise((resolve,rejact)=>{
+        const res=postman.length!=0;
+        if(res){
+            postman.pop()
+            resolve()
+        }
+        else(
+            rejact('OOPS : it is empty array')
+        )
+    })
+}
+    let lastActiveHr=new Date().getTime()
+    let interval;
+function lastActive(y){
+        clearInterval(interval)
+    interval= setInterval(()=>{
+        document.getElementById('timerlast').innerHTML=`${((new Date().getTime()-y)/1000)}s`
+    },1000)
+   
+}
+    let intervalID;
+ function   displayPostman(){
+        clearInterval(intervalID);
+        let add=  document.getElementById('addman')
+
+        // setInterval(()=>{
+            setTimeout(()=>{
+          let y=new Date().getTime()    
+          let s=''  
+            postman.forEach((e)=>{
+                s+=`<li>${e.name} : => ${e.address}  :createdAt -->${(parseInt(y-e.time))/1000}s ago  <button id="edit">Edit</button></li>`
+            })
+            document.getElementById('addman').innerHTML=s
+            lastActive(new Date().getTime())
+            // prompt('want to add')
+        },5000);
+        
+     }
+// const promis1=Promise.resolve 
+    addPostman({name:'rajandera',address:'maharastra'}).then(displayPostman).catch(e=>console.log(e))
+    setTimeout(()=>{
+        addPostman({name:'rajbabu',address:'delhifs'}).then(displayPostman).catch(m=>console.log(m))
+    },4000)
+    setTimeout(()=>{
+        addPostman({name:'surendere',address:'goa'}).then(displayPostman).catch(f=>console.log(f))
+    },6000)
+    setTimeout(()=>{
+        addPostman({name:'abhisheak',address:'darbhanga'}).then(displayPostman).catch(v=>console.log(v))
+    },9000)
+
+
+ let setid;   
+    setTimeout(()=>{
+        setid= setInterval(()=>{
+    deletePost().then(displayPostman).catch(e=>{
+            clearInterval(setid);
+    console.log(e)})
+  },5000) },15000)
+    
+</script>
+</html>
