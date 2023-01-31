@@ -22,7 +22,7 @@
    
  function   addPostman(post,callback){
         setTimeout(()=>{
-            postman.push(post)
+            postman.push({...post,time: new Date().getTime()})
             callback()//displayPostman() and remove callback
         },3000)
     }
@@ -37,18 +37,18 @@
                 s+=`<li>${e.name} : => ${e.address}  :createdAt -->${(parseInt(y-e.time))/1000}s ago  <button id="edit">Edit</button></li>`
             })
             document.getElementById('addman').innerHTML=s
-            prompt('want to add')
+            // prompt('want to add')
         },3000)
         
      }
-    let newPost={name:'rajandera',address:'maharastra',time: new Date().getTime()}
+    let newPost={name:'rajandera',address:'maharastra'}
     addPostman(newPost,displayPostman)
     setTimeout(()=>{
-        let newPost2={name:'rajbabu',address:'delhifs',time: new Date().getTime()}
+        let newPost2={name:'rajbabu',address:'delhifs'}
         addPostman(newPost2,displayPostman)
     },4000)
     setTimeout(()=>{
-        let newPost2= {name:'surendere',address:'goa',time: new Date().getTime()}
+        let newPost2= {name:'surendere',address:'goa'}
         addPostman(newPost2,displayPostman)
     },6000)
     setTimeout(()=>{
