@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=, initial-scale=1.0">
+    <title>AsyncFunction</title>
+    <style>
+        #timerdis{
+            position: fixed;
+            right: 20px;
+            top: 10px;
+            background-color: red;
+            color: white;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        AsyncFunction--
+    </div>
+    <div id="timerdis"></div>
+    <div>
+        <ul id="adding_item"></ul>
+    </div>
+
+</body>
+<Script>
+//     console.log('person1 got tricket')
+//     const wifeBringingTricket=new Promise((resolve,reject)=>{
+//         setTimeout(()=>{
+//             resolve('tricket')
+//         },2000)
+//     })
+//    let popcon= wifeBringingTricket.then((T)=>{
+//         console.log('housbans bringing popcon')
+//         console.log('wife want butter on popcon')
+//         return new Promise((resolve,reject)=>{
+//             resolve(`${T}`)
+//         })
+//     })
+//     let butter=popcon.then((t)=>{
+//         console.log('housbans bringing butter ')
+//         console.log('wife got butter')
+//         console.log('wife: reminded ')
+//         return new Promise((resolve,reject)=>{
+//             resolve(`${t}`)
+//         })
+//     })
+//     let reminder=butter.then((h)=>{
+//         console.log('wife let us go ')
+//         console.log(' thanks ')
+//         return (`${h}`)
+//     })
+//     console.log(`person 2 ${wifeBringingTricket}`)
+//     console.log('person3 got tricket')
+//     console.log('person4 got tricket')
+//     console.log('person5 got tricket')
+ //********************
+ console.log( '****************************')
+    
+   async function bringingtricket(){
+    console.log('%%%%%%%%%%%%%%%%')
+        let bringtrig=new Promise((resolve,reject)=>{ setTimeout(() => {
+            resolve(`popcon1`)
+        }, 8000) })
+        let popconwant=new Promise((resolve,reject)=>{ resolve(`butter1`)})
+        let butteradd=new Promise((resolve,reject)=>{ resolve(`reminde1`)})
+        let tricket=await bringtrig
+        console.log('housbans bringing popcon')
+        console.log('wife want butter on popcon')
+        let popcon1=await popconwant
+        console.log('housbans bringing popcon')
+        console.log('wife want butter on popcon')
+        let reminde1=await butteradd
+        console.log('wife let us go ')
+        console.log(' thanks ')
+        return tricket
+    }
+    let obj=[{name:'pankja',stay:'goshala'}]
+    
+    
+   function creatpost(post){
+    return new Promise((resolve,reject)=>{
+
+    
+    console.log('i am creating post function')
+    setTimeout(()=>{
+        obj.push(post)
+        console.log('post created')
+        resolve('true')
+    },3000)
+    
+}) 
+    }
+    function timerfunction(y){
+        setInterval(()=>{
+        document.getElementById('timerdis').innerHTML=`${parseInt((new Date().getTime()-y)/1000)} s`
+    },1000)
+    }
+    function display(){
+        return new Promise((resolve,reject)=>{
+            let y=new Date().getTime()
+            timerfunction(y)
+        setTimeout(()=>{
+            console.log('i am displaying function')
+            let s=''
+            obj.forEach((e)=>{
+                s+=`<li> ${e.name}: ->${e.stay}</li>`
+               
+            })
+            document.getElementById('adding_item').innerHTML=s
+            resolve('display done now you can perform another task')
+        },1000)
+       
+    })
+    }
+    creatpost({name:'rajendra',stay:'goa'})
+    creatpost({name:'sonu',stay:'neghflgfd'})
+    creatpost({name:'abhishak',stay:'delhi'})
+    let id=0
+    function deleting(){
+       
+        return new Promise((resolve,reject)=>{
+            
+      id=  setInterval(()=>{
+            if(obj.length==0){
+                clearInterval(id)
+                resolve('true')
+            }
+            else{
+                obj.pop()
+            }
+            display()
+        },5000)
+    })
+    }
+
+    async function postman(){
+        console.log('i am async function*************')
+        console.log('person1 got tricket')
+       await new Promise((resolve,reject)=>{
+                creatpost({name:'rajan',stay:'maharastra'}).then((e)=>{
+                    console.log(e)
+                    if(e){
+                        console.log('resolved')
+                        resolve()
+                    }else{
+                        console.log('sorry it rejected')
+                    }
+                })
+            })
+            
+      await display().then(f=>console.log(f))
+      await new Promise((resolve,reject)=>{
+        deleting().then((d)=>{
+            if(d){
+                resolve()
+            }
+        })
+      })
+        console.log('person3 got tricket')
+    console.log('person4 got tricket')
+    console.log('person5 got tricket')
+    }
+    postman().then((e)=>{console.log(`person 2 ${e}`)})
+
+</Script>
+</html>
