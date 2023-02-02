@@ -39,13 +39,13 @@
             transition: 0.5s ease-in-out;
         }
         .submit,.delete,.edit{
-            font-size: medium;
+            font-size: small;
             text-align: center;
             border-radius: 8px;
             background-color: rgb(162, 59, 59);
             color: rgb(231, 223, 208);
-            width: 90px;
-            padding-bottom: 8px;
+            width: 70px;
+            padding-bottom: 5px;
         }
         .delete,.submit{
             position: absolute;
@@ -60,16 +60,16 @@
             color: rgb(245, 245, 240);
             text-align: center;
         }
-        .added-item{
+        /* .added-item{
             text-align: center;
         background-color: rgb(42, 164, 107);  
         color: rgb(206, 206, 172);
         font-size: large;
-          }
+          } */
           .list{
             border-style: ridge;
             border-color: rgba(240, 248, 255, 0.253);
-            font-size: x-large;
+            font-size: large;
             padding-left: 10px;
           }
     </style>
@@ -91,21 +91,53 @@
        
 </form>
 <div id="addItem"></div>
-<div id="add-Item"></div>
+<div id="add-Item" class="list"></div>
+
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
  <script>
   
-let url= "https://crudcrud.com/api/d974835586d04290aafa22e83b31d5aa/application"
+let url= `https://crudcrud.com/api/d974835586d04290aafa22e83b31d5aa/application`
  axios.get(url).then((e)=>{
         let got=e.data
         console.log(got)
-        let s=''
+        // let s=''
        got.forEach(h => {
-        console.log(h.email)
-       s+=`<li> ${h.name} : ${h.email} : ${h.phone}</li>`
+    //    s+=`<li>  : <button id="delet" class="delete">Delete</button></li>`
+       //************
+            let newItem=document.createElement('li') 
+            newItem.appendChild( document.createTextNode( `${h.name} : ${h.email} : ${h.phone} ` )  )   
+           newItem.className='list'
+            let butten=document.createElement('button')
+            butten.appendChild( document.createTextNode('Delete'))
+            butten.className='delete'
+            butten.id='delete'
+            let edit=document.createElement('button')
+            edit.appendChild(document.createTextNode('Edit'))
+            edit.className='edit'
+       newItem.appendChild(butten)
+        newItem.appendChild(edit)
+        add.appendChild(newItem)
+       
+       butten.onclick=()=>{
+        add.removeChild(newItem)
+        let ul=`${url}/${h._id}`;
+        axios.delete(ul)
+        console.log(ul)
+       }
+       edit.onclick=()=>{
+        add.removeChild(newItem)
+        let ul=`${url}/${h._id}`;
+        axios.delete(ul)
+        name1.value=h.name
+        email1.value=h.email
+        phone.value=h.phone
+
+       }
+
+       //**********
        });
-       document.getElementById('add-Item').innerHTML=s
+    //    document.getElementById('add-Item').innerHTML=s
     }).catch(f=>console.log(f))
 let subm=document.getElementById('submit')
 let email1=document.getElementById('email1')
@@ -129,6 +161,7 @@ function addItem(e){
             let butten=document.createElement('button')
             butten.appendChild( document.createTextNode('Delete'))
             butten.className='delete'
+            butten.id='delete'
             let edit=document.createElement('button')
             edit.appendChild(document.createTextNode('Edit'))
             edit.className='edit'
@@ -151,6 +184,16 @@ function addItem(e){
 
        }
 }
+// document.getElementById('addItem').addEventListener('click',deleteItem);
+// function deleteItem(e){
+//   if(e.target.classList.contains('delete')){
+//     let li=e.target.parentElement
+//     console.log('de')
+//     document.getElementById('add-Item').removeChild(li)
+//   }
+// }
+
+
 
 function removeList(e){
     consloe.log(Object1.email)
