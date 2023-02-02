@@ -96,17 +96,17 @@
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
  <script>
-  
-let url= `https://crudcrud.com/api/d974835586d04290aafa22e83b31d5aa/application`
+  let add1=document.getElementById('add-Item')
+let url= `https://crudcrud.com/api/aeb4b497797941ff920197a5ce46cffe/application`
  axios.get(url).then((e)=>{
-        let got=e.data
-        console.log(got)
+        let h=e.data
+        console.log(h)
         // let s=''
-       got.forEach(h => {
+        for(let i=h.length-1;i>=0;i--){
     //    s+=`<li>  : <button id="delet" class="delete">Delete</button></li>`
        //************
             let newItem=document.createElement('li') 
-            newItem.appendChild( document.createTextNode( `${h.name} : ${h.email} : ${h.phone} ` )  )   
+            newItem.appendChild( document.createTextNode( `${h[i].name} : ${h[i].email} : ${h[i].phone} ` )  )   
            newItem.className='list'
             let butten=document.createElement('button')
             butten.appendChild( document.createTextNode('Delete'))
@@ -117,17 +117,17 @@ let url= `https://crudcrud.com/api/d974835586d04290aafa22e83b31d5aa/application`
             edit.className='edit'
        newItem.appendChild(butten)
         newItem.appendChild(edit)
-        add.appendChild(newItem)
+        add1.appendChild(newItem)
        
        butten.onclick=()=>{
-        add.removeChild(newItem)
-        let ul=`${url}/${h._id}`;
+        add1.removeChild(newItem)
+        let ul=`${url}/${h[i]._id}`;
         axios.delete(ul)
         console.log(ul)
        }
        edit.onclick=()=>{
-        add.removeChild(newItem)
-        let ul=`${url}/${h._id}`;
+        add1.removeChild(newItem)
+        let ul=`${url}/${h[i]._id}`;
         axios.delete(ul)
         name1.value=h.name
         email1.value=h.email
@@ -136,7 +136,7 @@ let url= `https://crudcrud.com/api/d974835586d04290aafa22e83b31d5aa/application`
        }
 
        //**********
-       });
+       };
     //    document.getElementById('add-Item').innerHTML=s
     }).catch(f=>console.log(f))
 let subm=document.getElementById('submit')
