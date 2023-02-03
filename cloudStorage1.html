@@ -72,6 +72,15 @@
             font-size: large;
             padding-left: 10px;
           }
+          #timer{
+            position: fixed;
+            top: 25px;
+            right: 10px;
+            padding: 5px;
+            font-weight: 900;
+            background-color: rgb(222, 18, 18);
+            color: rgba(250, 244, 244, 0.813);
+          }
     </style>
 </head>
 <body>
@@ -92,12 +101,20 @@
 </form>
 <div id="addItem"></div>
 <div id="add-Item" class="list"></div>
+<span id="timer">timer</span>
 
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
  <script>
   let add1=document.getElementById('add-Item')
-let url= `https://crudcrud.com/api/aeb4b497797941ff920197a5ce46cffe/application`
+let url= `https://crudcrud.com/api/8a5c97eda7d341a69d9f85d51a47d405/status`
+let idint=0;
+function timer(y){
+    clearInterval(idint)
+   idint= setInterval(()=>{
+    document.getElementById('timer').innerHTML=`${parseInt((new Date().getTime()-y)/1000)}s`
+   },1000)
+}
  axios.get(url).then((e)=>{
         let h=e.data
         console.log(h)
@@ -105,6 +122,7 @@ let url= `https://crudcrud.com/api/aeb4b497797941ff920197a5ce46cffe/application`
         for(let i=h.length-1;i>=0;i--){
     //    s+=`<li>  : <button id="delet" class="delete">Delete</button></li>`
        //************
+       timer(new Date().getTime())
             let newItem=document.createElement('li') 
             newItem.appendChild( document.createTextNode( `${h[i].name} : ${h[i].email} : ${h[i].phone} ` )  )   
            newItem.className='list'
@@ -119,21 +137,21 @@ let url= `https://crudcrud.com/api/aeb4b497797941ff920197a5ce46cffe/application`
         newItem.appendChild(edit)
         add1.appendChild(newItem)
        
-       butten.onclick=()=>{
-        add1.removeChild(newItem)
-        let ul=`${url}/${h[i]._id}`;
-        axios.delete(ul)
-        console.log(ul)
-       }
-       edit.onclick=()=>{
-        add1.removeChild(newItem)
-        let ul=`${url}/${h[i]._id}`;
-        axios.delete(ul)
-        name1.value=h.name
-        email1.value=h.email
-        phone.value=h.phone
+    //    butten.onclick=()=>{
+    //     add1.removeChild(newItem)
+    //     let ul=`${url}/${h[i]._id}`;
+    //     axios.delete(ul)
+    //     console.log(ul)
+    //    }
+    //    edit.onclick=()=>{
+    //     add1.removeChild(newItem)
+    //     let ul=`${url}/${h[i]._id}`;
+    //     axios.delete(ul)
+    //     name1.value=h.name
+    //     email1.value=h.email
+    //     phone.value=h.phone
 
-       }
+    //    }
 
        //**********
        };
@@ -165,35 +183,74 @@ function addItem(e){
             let edit=document.createElement('button')
             edit.appendChild(document.createTextNode('Edit'))
             edit.className='edit'
+            edit.id='edit'
        newItem.appendChild(butten)
         newItem.appendChild(edit)
         add.appendChild(newItem)
+        timer(new Date().getTime())
         axios.post(url,Object1).then((e)=>{
             console.log(e)
         }) .catch(e=>console.log(e))
        butten.onclick=()=>{
         add.removeChild(newItem)
-        localStorage.removeItem(Object1.email)
+        timer(new Date().getTime())
        }
        edit.onclick=()=>{
         add.removeChild(newItem)
-        localStorage.removeItem(Object1.email)
+        timer(new Date().getTime())
         name1.value=Object1.name
         email1.value=Object1.email
         phone.value=Object1.phone
 
        }
 }
-// document.getElementById('addItem').addEventListener('click',deleteItem);
-// function deleteItem(e){
-//   if(e.target.classList.contains('delete')){
-//     let li=e.target.parentElement
-//     console.log('de')
-//     document.getElementById('add-Item').removeChild(li)
-//   }
-// }
+///////////////independent 
+add1.addEventListener('click',deleteItem);
+function deleteItem(e){
+  if(e.target.classList.contains('delete')){
+    let li=e.target.parentElement
+    let y=JSON.stringify(li.textContent).split(' : ')[1].trim()
+    document.getElementById('add-Item').removeChild(li)
+    console.log(y)
+    axios.get(url).then((e)=>{
+        let h=e.data
+        for(let i=0;i<h.length;i++){
+            let t=h[i].email
+            if(y===t){
+                timer(new Date().getTime())
+                axios.delete(`${url}/${h[i]._id}`)
+                console.log(h[i]._id)
+                
+            }
+        }
+    }).catch(e=>console.log(e))
+  }
+}
+add1.addEventListener('click',editItem);
+function editItem(e){
+  if(e.target.classList.contains('edit')){
+    let li=e.target.parentElement
+    let y=JSON.stringify(li.textContent).split(' : ')[1].trim()
+    document.getElementById('add-Item').removeChild(li)
+    console.log(y)
+    axios.get(url).then((e)=>{
+        let h=e.data
+        for(let i=0;i<h.length;i++){
+            let t=h[i].email
+            if(y===t){
+                timer(new Date().getTime())
+                console.log(h[i]._id)
+                name1.value=h[i].name
+                email1.value=h[i].email
+                phone.value=h[i].phone
+                axios.delete(`${url}/${h[i]._id}`)
+            }
+        }
+    }).catch(e=>console.log(e))
+  }
+}
 
-
+////////////independent selecctor
 
 function removeList(e){
     consloe.log(Object1.email)
