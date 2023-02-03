@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sellers</title>
+    
+</head>
+<body>
+    <div class="head1">
+        sellers dashbord
+    </div>
+    <br><br>
+   <div class="contaner">
+ <form  onsubmit="submitItem()" >
+        <label for="item">Selling price</label>
+         <input type="number" id="item" class="item">
+         <label for="product">product Name</label>
+         <input type="text" class="product" id="product" required >
+         <label for="select-item">Choose a catagory</label>
+         <select name="" id="select-item">
+            <option value="food">food</option>
+            <option value="electronic">electronic</option>
+            <option value="skin care">skin</option>
+            <ul id="food"></ul>
+         </select>
+
+    <input type="submit" class="submit" id="submit" value="submit">
+       
+</form>
+<div id="add-item">
+<h2> Food product</h2>
+<div id="food"></div>
+<h2> Electronic</h2>
+<div id="electronic"></div>
+<h2> Skin care</h2>
+<div id="skincare"></div>
+</div>
+
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
+ <script>
+  let add1=document.getElementById('add-Item')
+  let foo=document.getElementById('food')
+  let elec=document.getElementById('electronic')
+  let ski=document.getElementById('skincare')
+let url= `https://crudcrud.com/api/0df71c11227a423b9c6cbe13733962ce/status`
+function shawitem(){
+ axios.get(url).then((e)=>{
+        let h=e.data
+        console.log('shwing',h)
+        let f=''
+        let e11=''
+        let s=''
+        for(let i=h.length-1;i>=0;i--){
+            let val=`${h[i].cat}`
+          
+            if(val=='food'){
+                f+=`<li>${h[i].price} : ${h[i].product} : ${h[i].cat}<button id="delete" class="delete">Delete</button></li>`
+            }
+           else if(val=='electronic'){
+                e11+=`<li>${h[i].price} : ${h[i].product} : ${h[i].cat}<button id="delete" class="delete">Delete</button></li>`
+            }
+           else if(val=='skin care'){
+                s+=`<li>${h[i].price} : ${h[i].product} : ${h[i].cat}<button id="delete" class="delete">Delete</button></li>`
+            }
+       
+       };
+     
+       foo.innerHTML=f
+       elec.innerHTML=e11
+       ski.innerHTML=s
+    }).catch(f=>console.log(f))
+}
+shawitem()
+let subm=document.getElementById('submit')
+subm.addEventListener('click',addItem);
+
+async function addItem(e){
+     e.preventDefault()
+     let f1=document.getElementById('item')
+  let e1=document.getElementById('product')
+  let s1=document.getElementById('select-item')
+     
+     let Object1={
+    price : f1.value,
+    product : e1.value,
+    cat: s1.value
+}
+    
+        await axios.post(url,Object1)
+        shawitem()
+      
+}
+
+///////////////independent 
+// function findid(y){
+//     return new Promise((resolve,reject)=>{
+//         axios.get(url).then((e)=>{
+//         let h=e.data
+//         for(let i=0;i<h.length;i++){
+//             let t=h[i].product
+//             if(y===t){
+//               resolve(`${h[i]._id}`)
+                
+//             }
+//         }
+//     }).catch(e=>console.log('catch'.e))
+//     })
+    // .then(f=>{
+    //     axios.delete(`${url}/${f}`)
+    //     console.log(f)}
+        
+    //     )
+    // .catch(g=>console.log(g))
+// }
+
+foo.addEventListener('click',food1);
+ function food1(e){
+    e.preventDefault()
+  if(e.target.classList.contains('delete')){
+    let li=e.target.parentElement
+    console.log('i am li',li)
+  foo.removeChild(li)
+    let y=JSON.stringify(li.textContent).split(' : ')[1].trim()
+    
+    // console.log(y)
+    axios.get(url).then((e)=>{
+        let h=e.data
+        for(let i=0;i<h.length;i++){
+            let t=h[i].product
+            if(y===t){
+                console.log(y,t)
+                axios.delete(`${url}/${h[i]._id}`)
+                
+            }
+        }
+    }).catch(e=>console.log('catch'.e)) 
+    // shawitem()      
+  }
+}
+elec.addEventListener('click',food2);
+function food2(e){
+    e.preventDefault()
+  if(e.target.classList.contains('delete')){
+    let li=e.target.parentElement
+    console.log('i am li',li)
+  elec.removeChild(li)
+    let y=JSON.stringify(li.textContent).split(' : ')[1].trim()
+    
+    // console.log(y)
+    axios.get(url).then((e)=>{
+        let h=e.data
+        for(let i=0;i<h.length;i++){
+            let t=h[i].product
+            if(y===t){
+                console.log(y,t)
+                axios.delete(`${url}/${h[i]._id}`)
+                
+            }
+        }
+    }).catch(e=>console.log('catch'.e)) 
+    // shawitem()      
+  }
+}
+
+
+
+
+ski.addEventListener('click',food3);
+function food3(e){
+    e.preventDefault()
+  if(e.target.classList.contains('delete')){
+    let li=e.target.parentElement
+    console.log('i am li',li)
+  ski.removeChild(li)
+    let y=JSON.stringify(li.textContent).split(' : ')[1].trim()
+    
+    // console.log(y)
+    axios.get(url).then((e)=>{
+        let h=e.data
+        for(let i=0;i<h.length;i++){
+            let t=h[i].product
+            if(y===t){
+                console.log(y,t)
+                axios.delete(`${url}/${h[i]._id}`)
+                
+            }
+        }
+    }).catch(e=>console.log('catch'.e)) 
+    // shawitem()      
+  }
+}
+
+    </script>
+</body>
+</html>
+   
