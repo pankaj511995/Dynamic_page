@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sellers</title>
+    
+</head>
+<body>
+    <div class="head1">
+        sellers demo
+    </div>
+    <br><br>
+   <div class="contaner">
+ <form  onsubmit="submitItem()" >
+        <label for="item">Selling price</label>
+         <input type="number" id="item" class="item">
+         <label for="product">product Name</label>
+         <input type="text" class="product" id="product" required >
+         <label for="select-item">Choose a catagory</label>
+         <select name="" id="select-item">
+            <option value="food">food</option>
+            <option value="electronic">electronic</option>
+            <option value="skin care">skin</option>
+            <ul id="food"></ul>
+         </select>
+
+    <input type="submit" class="submit" id="submit" value="submit">
+       
+</form>
+<div id="add-item">
+<h2> Food product</h2>
+<div id="food"></div>
+<h2> Electronic</h2>
+<div id="electronic"></div>
+<h2> Skin care</h2>
+<div id="skincare"></div>
+</div>
+
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
+ <script>
+  let add1=document.getElementById('add-Item')
+  let foo=document.getElementById('food')
+  let elec=document.getElementById('electronic')
+  let ski=document.getElementById('skincare')
+let url= `https://crudcrud.com/api/6d96cec03ebd4eaf881df70b36d10402/st`
+let show=0
+function shawitem(){
+  try{
+ axios.get(url).then((e)=>{
+        let h=e.data
+        console.log('shwing',h)
+        h.forEach(el => {
+          showScreen(el,2)
+        });
+    }).catch(f=>console.log('erroe on loding',f))
+  }
+  catch(er){
+    console.log(er)
+  }
+}
+
+
+document.getElementById('submit').addEventListener('click',addItem);
+async function addItem(e){
+  e.preventDefault()
+  try{
+     let f1=document.getElementById('item')
+  let e1=document.getElementById('product')
+  let s1=document.getElementById('select-item')
+     
+     let obj={
+    price : f1.value,
+    product : e1.value,
+    cat: s1.value
+}
+showScreen(obj,0)
+f1.value=''
+e1.value=''
+  }
+  catch(e){console.log('error while loading',e)
+}
+}
+async function showScreen(obj,val){
+  try{
+          let li=document.createElement('li')
+            li.appendChild(document.createTextNode(`${obj.price} : ${obj.product} : ${obj.cat}`))
+              let butt=document.createElement('button')
+            butt.appendChild(document.createTextNode('Delete'))
+            butt.className='delete'     
+            li.appendChild(butt)
+        if(obj.cat=='food'){
+          foo.appendChild(li)
+        }
+           else if(obj.cat=='electronic'){
+            elec.appendChild(li)
+            }
+           else if(obj.cat=='skin care'){
+            ski.appendChild(li)
+            }
+          
+            if(val===0){
+              // console.log('added in axios')
+        await axios.post(url,obj).then(e=>{
+          let l=e.data._id.trim()
+          butt.value=l
+         })
+        }
+        else{
+          // console.log('showing on screen')
+          butt.value=obj._id
+        }
+       
+      
+}catch(e){console.log('error while screen showing',e)
+}
+}
+shawitem()
+document.getElementById('food').addEventListener('click',(e)=>{
+  try{
+if(e.target.classList.contains('delete')){
+  let ur=e.target.value.trim()
+  let li=e.target.parentElement
+  food.removeChild(li)
+   
+   axios.delete(`${url}/${ur}`)
+}
+  }
+  catch(e){console.log('error while adding food item',e)}
+})
+document.getElementById('skincare').addEventListener('click',(e)=>{
+  try{
+if(e.target.classList.contains('delete')){
+  let ur=e.target.value.trim()
+  let li=e.target.parentElement
+  skincare.removeChild(li)
+   
+   axios.delete(`${url}/${ur}`)
+}
+  }
+  catch(e){console.log('error while adding skin item',e)}
+})
+document.getElementById('electronic').addEventListener('click',(e)=>{
+  try{
+if(e.target.classList.contains('delete')){
+  let ur=e.target.value.trim()
+  let li=e.target.parentElement
+  electronic.removeChild(li)
+   
+   axios.delete(`${url}/${ur}`)
+}
+  }
+  catch(e){console.log('error while adding electronic item',e)}
+})
+
+    </script>
+</body>
+</html>
+   
